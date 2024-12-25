@@ -3,6 +3,7 @@ import React, { createContext } from "react";
 interface AppContext {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isMobile: boolean;
 }
 
 export const AppContext = createContext<AppContext>({
@@ -10,4 +11,5 @@ export const AppContext = createContext<AppContext>({
     throw new Error("setIsLoading must be used within AppProvider");
   },
   isLoading: false,
+  isMobile: false,
 });

@@ -93,8 +93,8 @@ export const LandingShortageSection = () => {
       </p>
       <div className={"mt-5"}>
         <div className={"grid grid-cols-1 2xl:grid-cols-2 gap-5"}>
-          {medications.map((medication, index) => (
-            <MedicationCard key={index} medication={medication} />
+          {medications.map((medication) => (
+            <MedicationCard key={medication.title} medication={medication} />
           ))}
         </div>
       </div>

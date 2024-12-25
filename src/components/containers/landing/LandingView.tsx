@@ -1,7 +1,9 @@
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LandingReportSection } from "./report-section/LandingReportSection.tsx";
 import { LandingShortageSection } from "./shortage-section/LandingShortageSection.tsx";
+import { Dialog } from "../../shared/dialog/Dialog.tsx";
+import { GLPMissingForm } from "./glp-missing-form/GLPMissingForm.tsx";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 const states = ["California", "Colardo", "Nevada", "Oklahoma", "Arizona"];
@@ -129,9 +131,29 @@ export const LandingPageView = () => {
     setIsFading,
     isFading,
   ]);
+  const [isFoundGlpModalOpen, setIsFoundGlpModalOpen] = useState(false);
+  const [isMissingGlpModalOpen, setIsMissingGlpModalOpen] = useState(false);
+
+  const onFoundGLPSClick = useCallback(() => {
+    setIsFoundGlpModalOpen(true);
+  }, []);
+
+  const onMissingGLPSClick = useCallback(() => {
+    setIsMissingGlpModalOpen(true);
+  }, []);
 
   return (
     <>
+      <Dialog isOpen={isFoundGlpModalOpen} setIsOpen={setIsFoundGlpModalOpen}>
+        <p>Glp found dialog</p>
+      </Dialog>
+
+      <Dialog
+        isOpen={isMissingGlpModalOpen}
+        setIsOpen={setIsMissingGlpModalOpen}
+      >
+        <GLPMissingForm />
+      </Dialog>
       <div className={"min-h-svh"}>
         <p className={"font-semibold text-4xl"}>GLP-1 Supply Tracker</p>
         <p className={"mt-5"}>
@@ -191,7 +213,10 @@ export const LandingPageView = () => {
             </span>
           </div>
         )}
-        <LandingReportSection />
+        <LandingReportSection
+          onMissingGLPSClick={onMissingGLPSClick}
+          onFoundGLPSClick={onFoundGLPSClick}
+        />
         <LandingShortageSection />
       </div>
     </>

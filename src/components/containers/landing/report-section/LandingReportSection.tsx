@@ -1,6 +1,14 @@
 import { Button } from "../../../shared/button/Button.tsx";
 
-export const LandingReportSection = () => {
+interface LandingReportSectionProps {
+  onMissingGLPSClick: () => void;
+  onFoundGLPSClick: () => void;
+}
+
+export const LandingReportSection = ({
+  onMissingGLPSClick,
+  onFoundGLPSClick,
+}: LandingReportSectionProps) => {
   return (
     <div className={"flex justify-center border-b-[1px] pb-5"}>
       <div className={"mt-10"}>
@@ -30,10 +38,14 @@ export const LandingReportSection = () => {
           }
         >
           <div>
-            <Button color={"primary"}>I can't find GLP-1s ⚡</Button>
+            <Button onClick={onMissingGLPSClick} color={"primary"}>
+              I can't find GLP-1s ⚡
+            </Button>
           </div>
           <div className={" xl:pl-4"}>
-            <Button color={"secondary"}>I found GLP-1s 🙌</Button>
+            <Button onClick={onFoundGLPSClick} color={"secondary"}>
+              I found GLP-1s 🙌
+            </Button>
           </div>
         </div>
       </div>
