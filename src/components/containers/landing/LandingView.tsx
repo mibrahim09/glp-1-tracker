@@ -165,7 +165,7 @@ export const LandingPageView = () => {
             <span
               className={"flex gap-x-1 items-center justify-center text-lg"}
             >
-              <p className={"text-3xl"}>
+              <p className={"text-2xl"}>
                 {selectedReport.type === "SHORTAGE" ? "⚡" : "🙌"}
               </p>
               {selectedReport.type === "SHORTAGE" ? (

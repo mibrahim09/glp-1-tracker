@@ -43,10 +43,10 @@ export const MedicationCard = ({ medication }: MedicationCardProps) => {
       <div className={"bg-white py-5 px-3"}>
         {medication.reports.map((report, index) => (
           <div
-            className={`flex justify-start gap-x-3 ${index === medication.reports.length - 1 ? "" : "border-b pb-3 mb-3"}`}
+            className={`flex gap-x-3 ${index === medication.reports.length - 1 ? "" : "border-b pb-3 mb-3 "}`}
           >
             <p className={"text-3xl"}>{STATUS_ICONS[medication.status]}</p>
-            <div className={``}>
+            <div className={`w-full`}>
               <div key={report.dose} className={"flex justify-between"}>
                 <p className={"text-xl font-semibold"}>{report.dose}</p>
                 <p
