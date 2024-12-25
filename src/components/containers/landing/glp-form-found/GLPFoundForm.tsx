@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { REPORTER_TYPE } from "../../../../constants/enums.ts";
+import { REPORTER_TYPE } from "@/constants/enums.ts";
 
 interface GLPFoundReactHookForm {
   zipCode: string;
