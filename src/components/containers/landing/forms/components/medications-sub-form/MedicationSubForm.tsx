@@ -41,7 +41,10 @@ const MedicationDose: FC<MedicationDoseProps> = ({ medicationUid, doses }) => {
     setValue(`medications`, [...medications]);
   };
   return (
-    <div className="space-y-1 pl-3 pt-3" key={`${fieldName}.dose`}>
+    <div
+      className="space-y-1 pl-3 pt-3"
+      key={`${fieldName}.dose-${medicationUid}`}
+    >
       {doses.map((dose) => (
         <div key={`${fieldName}.dose-${dose.uid}`}>
           <FormItem className={"space-x-2"}>
@@ -116,7 +119,15 @@ export const MedicationSubForm = ({
           </div>
         );
       })}
-      {errors?.medications && <p>{JSON.stringify(errors.medications)}</p>}
+      <div>
+        {/* @ts-expect-error TS2722: Cannot invoke an object which is possibly undefined*/}
+        {errors?.medications?.map((item) => (
+          <div className={"text-destructive text-sm font-semibold"}>
+            <p>{item?.dose?.message}</p>
+            <p>{item?.message}</p>
+          </div>
+        )) ?? null}
+      </div>
     </div>
   );
 };

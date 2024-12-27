@@ -2,15 +2,27 @@ import * as yup from "yup";
 import { REPORTER_TYPE } from "@/constants/enums.ts";
 
 export const MissingFormSchema = yup.object().shape({
-  zipCode: yup.string().required(),
-  email: yup.string().email().required(),
-  reporterType: yup.string().required().oneOf(Object.values(REPORTER_TYPE)),
+  zipCode: yup
+    .string()
+    .required("ZipCode is required")
+    .matches(/^[0-9]$/, "Invalid ZipCode"),
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("You must enter your email"),
+  reporterType: yup
+    .string()
+    .required("You must select a reporter type")
+    .oneOf(Object.values(REPORTER_TYPE)),
   medications: yup
     .array(
       yup.object({
         uid: yup.string().required(),
-        dose: yup.array(yup.string().required()).required().min(1),
+        dose: yup
+          .array(yup.string().required("You must select at least one dose"))
+          .required("Dose is required")
+          .min(1, "You must select at least one dose"),
       }),
     )
-    .required(),
+    .required("You must select at least one medication"),
 });

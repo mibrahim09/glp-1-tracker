@@ -1,4 +1,4 @@
-import { Medication } from "../../../../types/medication.ts";
+import { Medication } from "@/types/medication.ts";
 import { MedicationCard } from "../medication-card/MedicationCard.tsx";
 
 const medications: Medication[] = [

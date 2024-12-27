@@ -10,15 +10,12 @@ import {
 } from "@/components/ui/form.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { REPORTER_TYPE } from "@/constants/enums.ts";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { MedicationSubForm } from "@/components/containers/landing/forms/components/medications-sub-form/MedicationSubForm.tsx";
+import { GLPFoundReactHookForm } from "@/types/forms/glp-found-form.ts";
 import { MedicationDoses } from "@/types/medications-doses.ts";
-import { GLPMissingReactHookForm } from "@/types/forms/glp-missing-form.ts";
+import { MedicationSubForm } from "@/components/containers/landing/forms/components/medications-sub-form/MedicationSubForm.tsx";
 import { FoundMedicationFormSchema } from "@/components/containers/landing/glp-form-found/found-medication-form.schema.ts";
 
-const simplifiedMedications: MedicationDoses[] = [
+const mockedMedications: MedicationDoses[] = [
   {
     uid: "med-1-Ozempic",
     title: "Ozempic",
@@ -94,71 +91,38 @@ const simplifiedMedications: MedicationDoses[] = [
 ];
 
 export const GLPFoundMedicationForm = () => {
-  const form = useForm<GLPMissingReactHookForm>({
+  const form = useForm<GLPFoundReactHookForm>({
     resolver: yupResolver(FoundMedicationFormSchema),
     defaultValues: {
       medications: [],
       email: "",
-      zipCode: "",
+      pharmacyAddress: "",
     },
   });
 
-  const onSubmit = (data: GLPMissingReactHookForm) => {
+  const onSubmit = (data: GLPFoundReactHookForm) => {
     console.log("onSubmit=", data);
   };
 
   return (
     <Form {...form}>
-      <p className={"text-xl mb-2 font-semibold"}>
-        Submit a missing GLP-1 Medication
-      </p>
+      <p className={"text-xl mb-2 font-semibold"}>I found a GLP-1 Medication</p>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormField
           control={form.control}
-          name="zipCode"
+          name="pharmacyAddress"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ZipCode</FormLabel>
+              <FormLabel>Pharmacy Address</FormLabel>
               <FormControl>
-                <Input placeholder="Zip Code" {...field} />
+                <Input placeholder="Pharmacy Address" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <MedicationSubForm medicationsDoses={simplifiedMedications} />
-
-        <FormField
-          control={form.control}
-          name="reporterType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Who are you?</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
-                  <div className={"flex gap-x-2"}>
-                    {Object.values(REPORTER_TYPE).map((type) => (
-                      <div
-                        key={`reporter-type-${type}`}
-                        className="flex items-center space-x-2"
-                      >
-                        <RadioGroupItem value={type} id={type} />
-                        <Label className={"capitalize"} htmlFor={type}>
-                          {type?.toString().toLowerCase()}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <MedicationSubForm medicationsDoses={mockedMedications} />
 
         <FormField
           control={form.control}

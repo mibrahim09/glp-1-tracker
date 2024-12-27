@@ -9,7 +9,7 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 10);
+    }, 2000);
   }, [setIsLoading]);
   return (
     <>

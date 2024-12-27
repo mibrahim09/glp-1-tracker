@@ -18,7 +18,7 @@ import { MedicationSubForm } from "@/components/containers/landing/forms/compone
 import { MedicationDoses } from "@/types/medications-doses.ts";
 import { GLPMissingReactHookForm } from "@/types/forms/glp-missing-form.ts";
 
-const simplifiedMedications: MedicationDoses[] = [
+const mockedMedications: MedicationDoses[] = [
   {
     uid: "med-1-Ozempic",
     title: "Ozempic",
@@ -127,7 +127,7 @@ export const GLPMissingForm = () => {
           )}
         />
 
-        <MedicationSubForm medicationsDoses={simplifiedMedications} />
+        <MedicationSubForm medicationsDoses={mockedMedications} />
 
         <FormField
           control={form.control}

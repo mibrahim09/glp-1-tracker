@@ -5,7 +5,7 @@ import {
   useCallback,
   useContext,
 } from "react";
-import { AppContext } from "../../../context/app/AppContext.tsx";
+import { AppContext } from "@/context/app/AppContext.tsx";
 import Modal from "react-responsive-modal";
 import { Sheet } from "react-modal-sheet";
 import "react-responsive-modal/styles.css";
@@ -28,7 +28,7 @@ export const Dialog = ({ children, isOpen, setIsOpen }: DialogProps) => {
       {isMobile && (
         <>
           <Sheet isOpen={isOpen} onClose={onCloseModal}>
-            <Sheet.Container>
+            <Sheet.Container className={"px-5 py-2"}>
               <Sheet.Header />
               <Sheet.Content>{children}</Sheet.Content>
             </Sheet.Container>

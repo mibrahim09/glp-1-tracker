@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 const states = ["California", "Colardo", "Nevada", "Oklahoma", "Arizona"];
 
-const reports = [
+const mockedReports = [
   {
     type: "SHORTAGE",
     medication: "Ozempic",
@@ -80,7 +80,7 @@ export const LandingMapAndReports = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       console.log("selecting random state");
-      const report = reports[Math.floor(Math.random() * states.length)];
+      const report = mockedReports[Math.floor(Math.random() * states.length)];
       setIsFading(true);
       setTimeout(() => {
         setSelectedReport(report);
@@ -118,7 +118,7 @@ export const LandingMapAndReports = () => {
         <div
           className={`mt-5 report-container ${isFading ? "fade-out" : "fade-in"}`}
         >
-          <span className={"flex gap-x-1 items-center justify-center text-lg"}>
+          <span className={"flex gap-x-1 items-center justify-center text-sm"}>
             <p className={"text-2xl"}>
               {selectedReport.type === "SHORTAGE" ? "⚡" : "🙌"}
             </p>

@@ -1,4 +1,4 @@
-import BaskLogo from "../../assets/bask-logo.svg";
+import BaskLogo from "@/assets/bask-logo.svg";
 import { useSearchParams } from "react-router-dom";
 
 export const Header = () => {
