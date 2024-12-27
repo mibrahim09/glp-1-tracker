@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { REPORTER_TYPE } from "@/constants/enums.ts";
 
-export const MissingFormSchema = yup.object().shape({
+export const FoundMedicationFormSchema = yup.object().shape({
   zipCode: yup.string().required(),
   email: yup.string().email().required(),
   reporterType: yup.string().required().oneOf(Object.values(REPORTER_TYPE)),

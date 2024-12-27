@@ -4,9 +4,10 @@ import { DosesForm, MedicationDoses } from "@/types/medications-doses.ts";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import { GLPMissingReactHookForm } from "@/types/forms/glp-missing-form.ts";
 
 interface MedicationDoseProps {
-  index: number;
+  medicationUid: string;
   doses: DosesForm[];
 }
 
@@ -14,25 +15,30 @@ interface MedicationSubFormProps {
   medicationsDoses: MedicationDoses[];
 }
 
-const MedicationDose: FC<MedicationDoseProps> = ({ index, doses }) => {
-  const { watch, setValue } = useFormContext();
-  const fieldName = `medications[${index}]`;
-  const currentFieldValue = watch(`${fieldName}.selected`);
-  if (!currentFieldValue) {
-    setValue(fieldName, undefined);
+const MedicationDose: FC<MedicationDoseProps> = ({ medicationUid, doses }) => {
+  const { watch, setValue } = useFormContext<GLPMissingReactHookForm>();
+  const fieldName = `medications`;
+  const medications = watch(`${fieldName}`);
+  const currentOwner = medications.find((item) => item.uid === medicationUid);
+  if (!currentOwner) {
     return null;
   }
 
-  const currentChecked = watch(`${fieldName}.dose`) ?? [];
+  const currentChecked = currentOwner.dose ?? [];
   const onCheck = (checked: CheckedState, doseUid: string) => {
+    let newDoses: undefined | Set<string>;
     if (checked) {
-      setValue(`${fieldName}.dose`, [...currentChecked, doseUid]);
+      newDoses = new Set<string>([...currentChecked, doseUid]);
     } else {
-      setValue(
-        `${fieldName}.dose`,
-        currentChecked.filter((uid: string) => uid !== doseUid),
-      );
+      newDoses = new Set<string>([
+        ...currentChecked.filter((item) => item !== doseUid),
+      ]);
     }
+    const medicationIndex = medications.findIndex(
+      (item) => item.uid === medicationUid,
+    );
+    medications[medicationIndex].dose = Array.from(newDoses);
+    setValue(`medications`, [...medications]);
   };
   return (
     <div className="space-y-1 pl-3 pt-3" key={`${fieldName}.dose`}>
@@ -57,36 +63,60 @@ const MedicationDose: FC<MedicationDoseProps> = ({ index, doses }) => {
 export const MedicationSubForm = ({
   medicationsDoses,
 }: MedicationSubFormProps) => {
-  const { setValue } = useFormContext();
+  const {
+    setValue,
+    formState: { errors },
+    getValues,
+  } = useFormContext<GLPMissingReactHookForm>();
 
   const onCheckChange = (
     checked: CheckedState,
-    index: number,
     medicationDoseField: MedicationDoses,
   ) => {
-    setValue(`medications[${index}].uid`, medicationDoseField.uid);
-    setValue(`medications[${index}].selected`, checked);
+    const medications = getValues("medications") ?? [];
+    if (checked) {
+      setValue("medications", [
+        ...medications,
+        { uid: medicationDoseField.uid, dose: [] },
+      ]);
+    } else {
+      setValue(
+        "medications",
+        medications.filter(
+          (medication) => medication.uid !== medicationDoseField.uid,
+        ),
+      );
+    }
   };
 
   return (
     <div className="space-y-3">
-      {medicationsDoses.map((medicationDoseField: MedicationDoses, index) => {
+      <p
+        className={`mb-1 text-sm font-semibold ${errors?.medications ? "text-destructive" : ""}`}
+      >
+        Medications
+      </p>
+      {medicationsDoses.map((medicationDoseField: MedicationDoses) => {
         return (
           <div key={medicationDoseField.uid}>
             <FormItem className={"space-x-2"}>
               <FormControl>
                 <Checkbox
                   onCheckedChange={(checked) =>
-                    onCheckChange(checked, index, medicationDoseField)
+                    onCheckChange(checked, medicationDoseField)
                   }
                 />
               </FormControl>
               <FormLabel>{medicationDoseField.title}</FormLabel>
             </FormItem>
-            <MedicationDose index={index} doses={medicationDoseField.doses} />
+            <MedicationDose
+              medicationUid={medicationDoseField.uid}
+              doses={medicationDoseField.doses}
+            />
           </div>
         );
       })}
+      {errors?.medications && <p>{JSON.stringify(errors.medications)}</p>}
     </div>
   );
 };
