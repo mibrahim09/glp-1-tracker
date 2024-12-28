@@ -1,10 +1,10 @@
 export interface MedicationDoses {
-  uid: string;
+  uuid: string;
   name: string;
   doses: DosesForm[];
 }
 
 export interface DosesForm {
-  uid: string;
+  uuid: string;
   name: string;
 }
