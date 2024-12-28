@@ -37,9 +37,9 @@ export const GLPMissingForm = ({ setOpen }: GLPMissingFormProps) => {
   const onSubmit = async (data: GLPMissingReactHookForm) => {
     try {
       setIsPending(true);
-      // await createMissingReport(data);
-      // setOpen(false);
-      toast({ title: 'Report sent successfully!', variant: 'success', style: { zIndex: 1000 } });
+      await createMissingReport(data);
+      setOpen(false);
+      toast({ title: 'Report sent successfully!', variant: 'success' });
     } catch (ex) {
       console.error(ex);
       toast({ title: 'Report failed to send!', variant: 'destructive' });
