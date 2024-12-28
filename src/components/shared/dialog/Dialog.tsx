@@ -28,9 +28,11 @@ export const Dialog = ({ children, isOpen, setIsOpen }: DialogProps) => {
       {isMobile && (
         <>
           <Sheet isOpen={isOpen} onClose={onCloseModal}>
-            <Sheet.Container className={"px-5 py-2"}>
-              <Sheet.Header />
-              <Sheet.Content>{children}</Sheet.Content>
+            <Sheet.Container>
+              <div className={"px-5 py-2 overflow-x-auto"}>
+                <Sheet.Header />
+                <Sheet.Content>{children}</Sheet.Content>
+              </div>
             </Sheet.Container>
             <Sheet.Backdrop />
           </Sheet>

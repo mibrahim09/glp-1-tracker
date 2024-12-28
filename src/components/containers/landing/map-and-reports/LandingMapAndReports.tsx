@@ -1,71 +1,11 @@
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "@/context/app/AppContext.tsx";
+import zipState from "zip-state";
+import { getRelativeDate, getStateName } from "@/utils/utils.ts";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 const states = ["California", "Colardo", "Nevada", "Oklahoma", "Arizona"];
-
-const mockedReports = [
-  {
-    type: "SHORTAGE",
-    medication: "Ozempic",
-    location: "California",
-    date: "Last week",
-  },
-  {
-    type: "SUPPLY",
-    medication: "Trulicity",
-    location: "New York",
-    date: "Yesterday",
-  },
-  {
-    type: "SHORTAGE",
-    medication: "Rybelsus",
-    location: "Texas",
-    date: "Today",
-  },
-  {
-    type: "SUPPLY",
-    medication: "Victoza",
-    location: "Florida",
-    date: "2 days ago",
-  },
-  {
-    type: "SHORTAGE",
-    medication: "Byetta",
-    location: "Illinois",
-    date: "Last month",
-  },
-  {
-    type: "SUPPLY",
-    medication: "Ozempic",
-    location: "Georgia",
-    date: "Last week",
-  },
-  {
-    type: "SHORTAGE",
-    medication: "Trulicity",
-    location: "Ohio",
-    date: "Yesterday",
-  },
-  {
-    type: "SUPPLY",
-    medication: "Rybelsus",
-    location: "North Carolina",
-    date: "Today",
-  },
-  {
-    type: "SHORTAGE",
-    medication: "Victoza",
-    location: "Michigan",
-    date: "2 days ago",
-  },
-  {
-    type: "SUPPLY",
-    medication: "Byetta",
-    location: "Pennsylvania",
-    date: "Last month",
-  },
-];
 
 export const LandingMapAndReports = () => {
   const [selectedState, setSelectedState] = useState("");
@@ -76,21 +16,33 @@ export const LandingMapAndReports = () => {
     date: string;
   }>();
   const [isFading, setIsFading] = useState(false);
+  const { notifications } = useContext(AppContext);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       console.log("selecting random state");
-      const report = mockedReports[Math.floor(Math.random() * states.length)];
+      const report = (notifications ?? [])[
+        Math.floor(Math.random() * states.length)
+      ];
       setIsFading(true);
       setTimeout(() => {
-        setSelectedReport(report);
-        setSelectedState(report.location);
+        const location = zipState(report.zipCode);
+        if (!location) {
+          return;
+        }
+        setSelectedReport({
+          type: report.type,
+          medication: report.medication,
+          location: getStateName(location),
+          date: getRelativeDate(report.createdAt),
+        });
+        setSelectedState(getStateName(location));
         setIsFading(false);
       }, 500);
     }, 2000);
 
     return () => clearInterval(intervalId);
-  }, [selectedState]);
+  }, [notifications, selectedState]);
 
   return (
     <>
@@ -128,7 +80,7 @@ export const LandingMapAndReports = () => {
                 <p className={"font-bold"}>
                   {selectedReport.medication}
                 </p>in {selectedReport.location}
-                <p className={"uppercase font-light text-xs"}>
+                <p className={"lowercase font-light text-xs"}>
                   ({selectedReport.date})
                 </p>
               </>
@@ -137,7 +89,7 @@ export const LandingMapAndReports = () => {
                 <p className={"font-bold"}>Supplier</p> found
                 <p className={"font-bold"}>{selectedReport.medication}</p>
                 shortage in {selectedReport.location}
-                <p className={"uppercase font-light text-xs"}>
+                <p className={"lowercase font-light text-xs"}>
                   ({selectedReport.date})
                 </p>
               </>

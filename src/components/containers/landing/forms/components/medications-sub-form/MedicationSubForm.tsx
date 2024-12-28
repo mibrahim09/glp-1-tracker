@@ -56,7 +56,7 @@ const MedicationDose: FC<MedicationDoseProps> = ({ medicationUid, doses }) => {
                 }}
               />
             </FormControl>
-            <FormLabel>{dose.dose}</FormLabel>
+            <FormLabel>{dose.name}</FormLabel>
           </FormItem>
         </div>
       ))}
@@ -110,7 +110,7 @@ export const MedicationSubForm = ({
                   }
                 />
               </FormControl>
-              <FormLabel>{medicationDoseField.title}</FormLabel>
+              <FormLabel>{medicationDoseField.name}</FormLabel>
             </FormItem>
             <MedicationDose
               medicationUid={medicationDoseField.uid}

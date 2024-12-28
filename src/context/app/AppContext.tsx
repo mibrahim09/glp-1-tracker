@@ -1,9 +1,13 @@
 import React, { createContext } from "react";
+import { MedicationNotification } from "@/types/notifications.ts";
+import { MedicationDoses } from "@/types/medications-doses.ts";
 
 interface AppContext {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isMobile: boolean;
+  notifications?: MedicationNotification[];
+  medications?: MedicationDoses[];
 }
 
 export const AppContext = createContext<AppContext>({

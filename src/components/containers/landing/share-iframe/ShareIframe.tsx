@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { useToast } from "@/hooks/use-toast.ts";
 
 const defaultIframeContent =
-  "<iframe src='http://localhost:5173/{{logo}}' width='500px' height='500px'></iframe>";
+  "<iframe src='http://localhost:5173/{{logo}}' width='650px' height='500px'></iframe>";
 
 export const ShareIframe = () => {
   const [isOpen, setIsOpen] = useState(false);
