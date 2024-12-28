@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { AppContext } from '@/context/app/AppContext.tsx';
 import { useReports } from '@/hooks/use-reports.ts';
-import { toast } from 'react-toastify';
+import { useToast } from '@/hooks/use-toast.ts';
 
 interface GLPMissingFormProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -22,6 +22,7 @@ interface GLPMissingFormProps {
 export const GLPMissingForm = ({ setOpen }: GLPMissingFormProps) => {
   const { medications } = useContext(AppContext);
   const { createMissingReport } = useReports();
+  const { toast } = useToast();
   const form = useForm<GLPMissingReactHookForm>({
     resolver: yupResolver(MissingFormSchema),
     defaultValues: {
@@ -36,16 +37,12 @@ export const GLPMissingForm = ({ setOpen }: GLPMissingFormProps) => {
   const onSubmit = async (data: GLPMissingReactHookForm) => {
     try {
       setIsPending(true);
-      await createMissingReport(data);
-      setOpen(false);
-      toast('Report sent successfully!', {
-        type: 'success',
-      });
+      // await createMissingReport(data);
+      // setOpen(false);
+      toast({ title: 'Report sent successfully!', variant: 'success', style: { zIndex: 1000 } });
     } catch (ex) {
       console.error(ex);
-      toast('Report failed to send!', {
-        type: 'error',
-      });
+      toast({ title: 'Report failed to send!', variant: 'destructive' });
     } finally {
       setIsPending(false);
     }

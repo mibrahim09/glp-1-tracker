@@ -1,14 +1,12 @@
-import './index.css';
-import { ViteRouter } from './routes.tsx';
-import { AppProvider } from './context/app/AppProvider.tsx';
-import { Toaster } from '@/components/ui/toaster';
-import { ToastContainer } from 'react-toastify';
+import "./index.css";
+import { ViteRouter } from "./routes.tsx";
+import { AppProvider } from "./context/app/AppProvider.tsx";
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   return (
     <AppProvider>
       <Toaster />
-      <ToastContainer />
       <ViteRouter />
     </AppProvider>
   );
