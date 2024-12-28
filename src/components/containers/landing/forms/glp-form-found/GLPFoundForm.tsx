@@ -10,7 +10,7 @@ import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { AppContext } from '@/context/app/AppContext.tsx';
 import { FoundMedicationFormSchema } from '@/components/containers/landing/forms/glp-form-found/found-medication-form.schema.ts';
 import { useReports } from '@/hooks/use-reports.ts';
-import { useToast } from '@/hooks/use-toast.ts';
+import { toast } from 'react-toastify';
 
 interface GLPFoundMedicationProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -19,7 +19,6 @@ interface GLPFoundMedicationProps {
 export const GLPFoundMedicationForm = ({ setOpen }: GLPFoundMedicationProps) => {
   const { medications } = useContext(AppContext);
   const { createFoundReport } = useReports();
-  const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
   const form = useForm<GLPFoundReactHookForm>({
     resolver: yupResolver(FoundMedicationFormSchema),
@@ -35,10 +34,10 @@ export const GLPFoundMedicationForm = ({ setOpen }: GLPFoundMedicationProps) => 
       setIsPending(true);
       await createFoundReport(data);
       setOpen(false);
-      toast({ title: 'Report sent successfully!', variant: 'success' });
+      toast('Report sent successfully!', { type: 'success' });
     } catch (ex) {
       console.error(ex);
-      toast({ title: 'Report failed to send!', variant: 'destructive' });
+      toast('Report failed to send!', { type: 'error' });
     } finally {
       setIsPending(false);
     }
